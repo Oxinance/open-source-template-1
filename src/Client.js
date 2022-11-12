@@ -14,7 +14,7 @@ class Client {
 
     static getCart(callback, errorCallback) {
         axios.get(`${this.apiUrl}/v1/cart`)
-            .then(response => console.log(response))
+            .then(response => callback(response))
             .catch(error => errorCallback(error))
     }
 
