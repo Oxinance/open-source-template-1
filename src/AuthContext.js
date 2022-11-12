@@ -122,12 +122,12 @@ export const AuthProvider = ({ children, projectKey }) => {
                 const localStorageKey = localStorage.getItem("projectKey")
 
                 // This code prevents shops from sharing localStorage since they share the Domain
+                console.log(localStorageKey)
                 if (localStorageKey === null || localStorageKey !== projectKey) {
                     localStorage.clear()
                 }
-
                 localStorage.setItem("projectKey", projectKey)
-                axios.defaults.headers.common["Project-Public-Key"] = localStorageKey;
+                axios.defaults.headers.common["Project-Public-Key"] = projectKey;
 
                 const token = localStorage.getItem("accessToken");
 

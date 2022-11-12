@@ -1,6 +1,6 @@
 import Home from "../views/Home";
 import Login from "../views/Login";
-import Cart from "../views/Cart";
+import Cart from "../views/cart/Cart";
 
 
 const routes = [
