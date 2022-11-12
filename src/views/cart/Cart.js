@@ -13,6 +13,8 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Client from "../../Client";
+import {Checkbox} from "@mui/material";
+import IconButton from "@mui/material/IconButton";
 
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
@@ -23,6 +25,7 @@ const stripePromise = loadStripe("pk_test_51K9jweCqicEaleYSVRY4sveoKeqRArJNS4iPh
 function AlignItemsList() {
 
     const [cartItems, setCartItems] = useState([])
+    const [amount, setAmount] = useState(0)
 
     useEffect(() => {
 
@@ -31,8 +34,9 @@ function AlignItemsList() {
             setCartItems(response.data)
             let amount = 0;
             response.data.map(item => {
-                amount = 0;
+                amount = amount + item.object.unit_amount * item.quantity;
             })
+            setAmount(amount / 100)
         }
 
         const errorCallback = (error) => {
@@ -50,8 +54,13 @@ function AlignItemsList() {
                     return (
                         <>
                             <ListItem alignItems="flex-start">
+                                secondaryAction={
+                                <IconButton edge="end" aria-label="comments">
+                                    <i className="fa-solid fa-xmark"/>
+                                </IconButton>
+                            }
                                 <ListItemAvatar>
-                                    <Avatar style={{width: 100, height: 100, borderRadius: 0}} alt="Remy Sharp" src={cartItem.product.images[0]} />
+                                    <Avatar style={{width: 100, height: 100, borderRadius: 0}} alt="Remy Sharp" src={cartItem.object.product.images[0]} />
                                 </ListItemAvatar>
                                 <ListItemText
                                     style={{marginLeft: 20}}
@@ -75,7 +84,7 @@ function AlignItemsList() {
                         </>
                     )
                 })}
-                <p style={{marginTop: 10}}>Total: </p>
+                <p style={{marginTop: 10}}>Total: {amount}€</p>
             </List>
         </div>
     );
@@ -102,13 +111,10 @@ export default function Cart() {
     };
 
     return (
-        <div className="App">
+        <div style={{display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", width: "100%", marginTop: 100, marginBottom: 200}}>
             {clientSecret && (
                 <Elements options={options} stripe={stripePromise}>
-                    <div style={{display: "flex", alignContent: "space-around"}}>
-                        <AlignItemsList/>
                         <CheckoutForm />
-                    </div>
                 </Elements>
             )}
         </div>

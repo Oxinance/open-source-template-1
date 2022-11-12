@@ -18,6 +18,12 @@ class Client {
             .catch(error => errorCallback(error))
     }
 
+    static deleteCartPrice(priceId, callback, errorCallback) {
+        axios.delete(`${this.apiUrl}/v1/cart/${priceId}`)
+            .then(response => callback(response))
+            .catch(error => errorCallback(error))
+    }
+
     static getProducts(callback, errorCallback) {
         axios.get(`${this.apiUrl}/v1/products`)
             .then(response => callback(response))
